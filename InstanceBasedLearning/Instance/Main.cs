@@ -42,13 +42,25 @@ namespace Instance
 			if (request != null)
 			{
 				g.FillEllipse(Brushes.Lime, request.Body);
-				if (learned.Count != 0)
+				if (learned.Count != 0 && k != 0)
 				{
 					List<Dot> dots = GetNearstDot();
+					int count = 0;
 					foreach (Dot dot in dots)
 					{
 						g.DrawLine(Pens.Black, request.LocationMiddle(), dot.LocationMiddle());
+
+						if (dot.State)
+							count++;
+						else
+							count--;						
 					}
+					if (count == 0)
+						label2.Text = "Auswertung: ?";
+					else if (count > 0)
+						label2.Text = "Auswertung: Wahr";
+					else
+						label2.Text = "Auswertung: Falsch";
 				}
 			}
 			base.OnPaint(e);
@@ -117,10 +129,10 @@ namespace Instance
 				Dot nearestDot = null;
 				double nearestDis = 0;
 
-				foreach (Dot dot in learned)		//Überprüft jeden Punkt mit dem RequestPunkt
+				foreach (Dot dot in learned)        //Überprüft jeden Punkt mit dem RequestPunkt
 				{
 					double d = Distance(request, dot); //Rechnet die Distanz zwischen Punkt und dem RequestPunkt aus
-					if(d < nearestDis || nearestDot == null)
+					if (d < nearestDis || nearestDot == null)
 					{
 						bool flag = false;
 
@@ -140,7 +152,6 @@ namespace Instance
 
 				dots.Add(nearestDot);
 			}
-
 
 			return dots;
 		}

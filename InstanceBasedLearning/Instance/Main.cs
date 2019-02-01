@@ -45,15 +45,15 @@ namespace Instance
 				if (learned.Count != 0 && k != 0)
 				{
 					List<Dot> dots = GetNearstDot();
-					int count = 0;
+					double count = 0;
 					foreach (Dot dot in dots)
 					{
 						g.DrawLine(Pens.Black, request.LocationMiddle(), dot.LocationMiddle());
 
 						if (dot.State)
-							count++;
+							count += 1 / Distance(request, dot);
 						else
-							count--;						
+							count -= 1 / Distance(request, dot);
 					}
 					if (count == 0)
 						label2.Text = "Auswertung: ?";
